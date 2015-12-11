@@ -2,6 +2,14 @@ lists = new Mongo.Collection("lists");
 
 if (Meteor.isClient) {
 
+  if(Meteor.isClient) {
+    Meteor.subscribe("Categories");
+  }
+
+  Tracker.autorun(function(){
+    Meteor.subscribe("listdetails", Session.get('current_list'));
+  });
+
   // We are decalringthe 'adding_category' flag
   Session.set('adding_category', false);
 
@@ -30,7 +38,7 @@ if (Meteor.isClient) {
       return Session.equals('adding_category', true);
     },
     list_status: function(){
-      if(Session.equals('current_list', this.id))
+      if(Session.equals('current_list', this._id))
         return " btn-info";
       else
         return " btn-primary";
@@ -158,8 +166,18 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
+  Meteor.startup(function() {
+
+    Meteor.startup(function(){
+      Meteor.publish("Categories", function() {
+        return lists.find({},{fields:{Category:1}});
+      });
+    });
+
+    Meteor.publish("listdetails", function(category_id){
+      return lists.find({_id:category_id});
+    });
+
   });
 }
 
