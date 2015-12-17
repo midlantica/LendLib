@@ -1,7 +1,7 @@
 Meteor.subscribe("Categories");
 
 Tracker.autorun(function(){
-  Meteor.subscribe("listdetails", Session.get('current_list'));
+  Meteor.subscribe("listdetails", Session.get("current_list"));
 });
 
 // We are decalring the 'adding_category' flag
@@ -46,14 +46,15 @@ Template.categories.events({
     focusText(t.find("#add-category"));
   },
   'keyup #add-category': function(e,t){
-    if(e.which === 13) {
-      var catVal = String(e.target.value || "");
-      if(catVal) {
-        lists.insert({Category:catVal,
-        owner: Meteor.userId()
-        Session.set('adding_category',false);
-      });
-    }
+    if (e.which === 13)
+      {
+        var catVal = String(e.target.value || "");
+        if (catVal)
+        {
+          lists.insert({Category:catVal,owner:this.userId});
+          Session.set('adding_category', false);
+        }
+      }
   },
   'focusout #add-category':function(e,t){
     Session.set('adding_category', false);

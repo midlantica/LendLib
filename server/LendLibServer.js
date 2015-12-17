@@ -1,9 +1,7 @@
-Meteor.startup(function() {
+Meteor.startup(function(){
 
-  Meteor.startup(function(){
-    Meteor.publish("Categories", function() {
-      return lists.find({},{fields:{Category:1}});
-    });
+  Meteor.publish("Categories", function() {
+    return lists.find({},{fields:{Category:1}});
   });
 
   Meteor.publish("listdetails", function(category_id){
@@ -11,6 +9,7 @@ Meteor.startup(function() {
   });
 
 });
+
 
 /* checks to see if the current user making the request to update is the admin user */
 
